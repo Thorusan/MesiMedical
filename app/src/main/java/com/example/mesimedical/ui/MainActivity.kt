@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.webkit.*
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
@@ -23,11 +24,7 @@ class MainActivity : AppCompatActivity() {
         webView = findViewById(R.id.webview)
         progressBar = findViewById(R.id.progress_circle);
 
-
         initWebView()
-
-        //webView.set
-
     }
 
     private fun initWebView() {
@@ -71,9 +68,19 @@ class MainActivity : AppCompatActivity() {
             startActivity(i)
         })
 
-        /**
-         * Enabling zoom-in controls
-         * */
+        disableZoom()
+        disableTextSelection()
+    }
+
+    private fun disableTextSelection() {
+        // disable text selection on long click
+        webView.setOnLongClickListener(OnLongClickListener { true })
+        webView.setLongClickable(false);
+        webView.setHapticFeedbackEnabled(false);
+    }
+
+    private fun disableZoom() {
+        // Disable zoom-in controls (pinch to zoom)
         webView.getSettings().setSupportZoom(false);
         webView.getSettings().setBuiltInZoomControls(false);
         webView.getSettings().setDisplayZoomControls(false);
