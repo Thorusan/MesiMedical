@@ -74,8 +74,8 @@ class MainActivity : AppCompatActivity() {
         /**
          * Enabling zoom-in controls
          * */
-        webView.getSettings().setSupportZoom(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(true);
+        webView.getSettings().setSupportZoom(false);
+        webView.getSettings().setBuiltInZoomControls(false);
+        webView.getSettings().setDisplayZoomControls(false);
     }
 }
