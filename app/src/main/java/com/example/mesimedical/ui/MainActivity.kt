@@ -1,15 +1,17 @@
 package com.example.mesimedical.ui
 
-import android.graphics.Bitmap
+import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
-import android.view.View.OnLongClickListener
-import android.webkit.*
+import android.webkit.WebView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.album.common.Constants.Companion.BASE_URL
 import com.example.mesimedical.R
+import java.io.UnsupportedEncodingException
+import java.net.URLDecoder
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,4 +50,5 @@ class MainActivity : AppCompatActivity() {
             Toast.LENGTH_LONG
         ).show()
     }
+
 }

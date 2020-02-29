@@ -3,8 +3,12 @@ package com.example.mesimedical.ui
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
-import android.webkit.*
-import com.example.album.common.Constants.Companion.BASE_URL
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.core.content.ContextCompat.startActivity
+
 import com.example.album.common.Constants.Companion.HOST_URL
 import com.example.mesimedical.R
 
@@ -22,8 +26,11 @@ internal open class CustomWebViewClient(activity: MainActivity) : WebViewClient(
 
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         // Opening external pages is not allowed
-        if (!Uri.parse(url).getHost()!!.contains(HOST_URL)) {
-            // This is my web site, so do not override; let my WebView load the page
+        if (url!!.startsWith("mailto:")) {
+            activity.showToast(activity.getString(R.string.email_not_supported))
+            view!!.reload()
+            return true
+        } else if (!Uri.parse(url).getHost()!!.contains(HOST_URL)) {
             activity.showToast(activity.getString(R.string.external_links_not_allowed))
             return true;
         } else {
@@ -62,12 +69,14 @@ internal open class CustomWebViewClient(activity: MainActivity) : WebViewClient(
     }
 
     private fun disallowFileDownload(view: WebView?) {
-        view!!.setDownloadListener(DownloadListener { url,
-                                                      userAgent,
-                                                      contentDisposition,
-                                                      mimetype,
-                                                      contentLength ->
+        view!!.setDownloadListener { url,
+                                     userAgent,
+                                     contentDisposition,
+                                     mimetype,
+                                     contentLength ->
             activity.showToast(activity.getString(R.string.action_not_supported))
-        })
+        }
     }
+
+
 }

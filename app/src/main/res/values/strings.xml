@@ -2,4 +2,6 @@
     <string name="app_name">MesiMedical</string>
     <string name="action_not_supported">This action is not supported</string>
     <string name="external_links_not_allowed">Opening external pages is not allowed</string>
+    <string name="information_share">Interesting information to share</string>
+    <string name="email_not_supported">Send email is not supported</string>
 </resources>
