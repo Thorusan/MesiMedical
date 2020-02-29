@@ -1,15 +1,11 @@
 package com.example.mesimedical.ui
 
 import android.graphics.Bitmap
-import android.net.Uri
 import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.core.content.ContextCompat.startActivity
-
-import com.example.album.common.Constants.Companion.HOST_URL
 import com.example.mesimedical.R
 
 internal open class CustomWebViewClient(activity: MainActivity) : WebViewClient() {
@@ -29,8 +25,14 @@ internal open class CustomWebViewClient(activity: MainActivity) : WebViewClient(
         if (url!!.startsWith("mailto:")) {
             activity.showToast(activity.getString(R.string.email_not_supported))
             return true
-        // Opening external pages is not allowed
-        } else if (!Uri.parse(url).getHost()!!.contains(HOST_URL)) {
+            // Opening external pages is not allowed
+        } else if (url.contains("facebook")) {
+            activity.showToast(activity.getString(R.string.external_links_not_allowed))
+            return true;
+        } else if (url.contains("twitter")) {
+            activity.showToast(activity.getString(R.string.external_links_not_allowed))
+            return true;
+        } else if (url.contains("linkedin")) {
             activity.showToast(activity.getString(R.string.external_links_not_allowed))
             return true;
         } else {
