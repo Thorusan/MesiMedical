@@ -8,8 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.example.mesimedical.R
 
-internal open class CustomWebViewClient(activity: MainActivity) : WebViewClient() {
-    private val activity = activity
+internal open class CustomWebViewClient(private val activity: MainActivity) : WebViewClient() {
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
@@ -27,13 +26,13 @@ internal open class CustomWebViewClient(activity: MainActivity) : WebViewClient(
             return true
             // Opening external pages is not allowed
         } else if (url.contains("facebook")) {
-            activity.showToast(activity.getString(R.string.external_links_not_allowed))
+            showExternalLinksNotAllowedToast()
             return true;
         } else if (url.contains("twitter")) {
-            activity.showToast(activity.getString(R.string.external_links_not_allowed))
+            showExternalLinksNotAllowedToast()
             return true;
         } else if (url.contains("linkedin")) {
-            activity.showToast(activity.getString(R.string.external_links_not_allowed))
+            showExternalLinksNotAllowedToast()
             return true;
         } else {
             view?.loadUrl(url)
@@ -80,5 +79,8 @@ internal open class CustomWebViewClient(activity: MainActivity) : WebViewClient(
         }
     }
 
+    private fun showExternalLinksNotAllowedToast() {
+        activity.showToast(activity.getString(R.string.external_links_not_allowed))
+    }
 
 }
