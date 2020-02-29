@@ -7,7 +7,7 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
+import com.example.album.common.Constants.Companion.BASE_URL
 import com.example.mesimedical.R
 
 internal open class CustomWebViewClient(activity: MainActivity): WebViewClient() {
@@ -23,8 +23,9 @@ internal open class CustomWebViewClient(activity: MainActivity): WebViewClient()
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-        if (url!!.contains("facebook")) {
-            activity.showToastActinNotSupported()
+        // Opening external pages is not allowed
+        if (!url!!.contains(BASE_URL)) {
+            activity.showToast(activity.getString(R.string.external_links_not_allowed))
             return true;
         } else {
             view?.loadUrl(url)
@@ -66,7 +67,7 @@ internal open class CustomWebViewClient(activity: MainActivity): WebViewClient()
                                                       contentDisposition,
                                                       mimetype,
                                                       contentLength ->
-            activity.showToastActinNotSupported()
+            activity.showToast(activity.getString(R.string.action_not_supported))
         })
     }
 }

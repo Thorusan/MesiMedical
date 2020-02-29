@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MesiMedical</string>
     <string name="action_not_supported">This action is not supported</string>
+    <string name="external_links_not_allowed">Opening external pages is not allowed</string>
 </resources>

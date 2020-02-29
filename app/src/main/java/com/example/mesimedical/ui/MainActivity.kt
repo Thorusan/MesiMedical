@@ -41,10 +41,10 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
     }
 
-    fun showToastActinNotSupported() {
+    fun showToast(message: String) {
         Toast.makeText(
             applicationContext,
-            getString(R.string.action_not_supported),
+            message,
             Toast.LENGTH_LONG
         ).show()
     }
