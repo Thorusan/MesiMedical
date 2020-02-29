@@ -62,7 +62,11 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl(BASE_URL)
 
         // Enable download
-        webView.setDownloadListener(DownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
+        webView.setDownloadListener(DownloadListener { url,
+                                                       userAgent,
+                                                       contentDisposition,
+                                                       mimetype,
+                                                       contentLength ->
             val i = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse(url)
             startActivity(i)
