@@ -28,7 +28,6 @@ internal open class CustomWebViewClient(activity: MainActivity) : WebViewClient(
         // Send email not supported
         if (url!!.startsWith("mailto:")) {
             activity.showToast(activity.getString(R.string.email_not_supported))
-            view!!.reload()
             return true
         // Opening external pages is not allowed
         } else if (!Uri.parse(url).getHost()!!.contains(HOST_URL)) {
