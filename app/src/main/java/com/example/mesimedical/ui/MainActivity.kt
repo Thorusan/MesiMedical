@@ -1,13 +1,12 @@
 package com.example.mesimedical.ui
 
-import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.webkit.*
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.album.common.Constants.Companion.BASE_URL
 import com.example.mesimedical.R
@@ -25,58 +24,28 @@ class MainActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progress_circle);
 
         initWebView()
+
     }
 
     private fun initWebView() {
-        webView.webViewClient = object : WebViewClient() {
-            override fun onPageStarted(
-                view: WebView?,
-                url: String?,
-                favicon: Bitmap?
-            ) {
-                super.onPageStarted(view, url, favicon)
-                progressBar.visibility = View.VISIBLE
-            }
-
-            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                view?.loadUrl(url)
-                return true
-            }
-
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                progressBar.visibility = View.GONE
-            }
-
-            override fun onReceivedError(
-                view: WebView?,
-                request: WebResourceRequest?,
-                error: WebResourceError?
-            ) {
-                super.onReceivedError(view, request, error)
-                progressBar.visibility = View.GONE
-
-            }
-        }
+        webView.webViewClient = CustomWebViewClient(this)
         webView.settings.javaScriptEnabled = true
         webView.loadUrl(BASE_URL)
-
-
-        disableZoom()
-        disableTextSelection()
     }
 
-    private fun disableTextSelection() {
-        // disable text selection on long click
-        webView.setOnLongClickListener(OnLongClickListener { true })
-        webView.setLongClickable(false);
-        webView.setHapticFeedbackEnabled(false);
+    fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
     }
 
-    private fun disableZoom() {
-        // Disable zoom-in controls (pinch to zoom)
-        webView.getSettings().setSupportZoom(false);
-        webView.getSettings().setBuiltInZoomControls(false);
-        webView.getSettings().setDisplayZoomControls(false);
+    fun hideProgressBar() {
+        progressBar.visibility = View.GONE
+    }
+
+    fun showToastActinNotSupported() {
+        Toast.makeText(
+            applicationContext,
+            getString(R.string.action_not_supported),
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

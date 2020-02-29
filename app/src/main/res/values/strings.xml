@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MesiMedical</string>
+    <string name="action_not_supported">This action is not supported</string>
 </resources>
