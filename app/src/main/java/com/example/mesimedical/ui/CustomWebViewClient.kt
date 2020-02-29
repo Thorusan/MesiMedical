@@ -25,11 +25,12 @@ internal open class CustomWebViewClient(activity: MainActivity) : WebViewClient(
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-        // Opening external pages is not allowed
+        // Send email not supported
         if (url!!.startsWith("mailto:")) {
             activity.showToast(activity.getString(R.string.email_not_supported))
             view!!.reload()
             return true
+        // Opening external pages is not allowed
         } else if (!Uri.parse(url).getHost()!!.contains(HOST_URL)) {
             activity.showToast(activity.getString(R.string.external_links_not_allowed))
             return true;
