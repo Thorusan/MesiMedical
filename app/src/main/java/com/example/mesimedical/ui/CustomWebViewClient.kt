@@ -1,12 +1,16 @@
 package com.example.mesimedical.ui
 
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.content.ContextCompat.startActivity
 import com.example.mesimedical.R
+
 
 internal open class CustomWebViewClient(private val activity: MainActivity) : WebViewClient() {
 
@@ -75,7 +79,17 @@ internal open class CustomWebViewClient(private val activity: MainActivity) : We
                                      contentDisposition,
                                      mimetype,
                                      contentLength ->
-            activity.showToast(activity.getString(R.string.action_not_supported))
+
+            if (mimetype.equals("application/pdf")) {
+                // https://www.mesimedical.com/app/uploads/2019/11/ABPIMD_IFU_ENG_v7-2_2019-07-05_web.pdf
+                val pdf = url
+                //view.loadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=$pdf")
+                activity.showToast(activity.getString(R.string.pdf_viewer))
+                view.loadUrl("https://docs.google.com/gview?embedded=true&url=$pdf") // open in google docs
+            } else {
+                activity.showToast(activity.getString(R.string.action_not_supported))
+            }
+
         }
     }
 
