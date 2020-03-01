@@ -27,12 +27,12 @@ class MainActivity : AppCompatActivity() {
         if (!Utility.isNetworkAvailable(this)) {
             showSnackbarNoInternet()
         } else {
-            initWebView()
+            initWebView(BASE_URL)
         }
     }
 
 
-    private fun initWebView() {
+    private fun initWebView(url: String) {
         webView.webViewClient = CustomWebViewClient(this)
         webView.settings.javaScriptEnabled = true
         webView.loadUrl(BASE_URL)
@@ -54,14 +54,18 @@ class MainActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun showSnackbarNoInternet() {
+    fun showSnackbarNoInternet(lastUrl: String = BASE_URL) {
         val snack = Snackbar.make(
             webView, getString(R.string.error_no_internet_connection),
             Snackbar.LENGTH_INDEFINITE
         )
         snack.setAction(getString(R.string.try_again), View.OnClickListener {
             // executed when TRY AGAIN is clicked
-            initWebView()
+            if (lastUrl.equals(BASE_URL)) {
+                initWebView(lastUrl)
+            } else {
+                webView.loadUrl(lastUrl)
+            }
         })
         snack.show()
     }

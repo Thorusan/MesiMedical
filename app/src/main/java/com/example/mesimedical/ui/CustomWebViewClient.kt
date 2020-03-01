@@ -1,5 +1,6 @@
 package com.example.mesimedical.ui
 
+import android.app.ProgressDialog
 import android.graphics.Bitmap
 import android.view.View
 import android.webkit.WebResourceError
@@ -9,11 +10,18 @@ import android.webkit.WebViewClient
 import com.example.mesimedical.R
 
 
-internal open class CustomWebViewClient(private val activity: MainActivity) : WebViewClient() {
+internal open class CustomWebViewClient(
+    private val activity: MainActivity
+) : WebViewClient() {
+
+    private lateinit var lastUrl: String
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         activity.showProgressBar()
+
+        lastUrl = url!!
+
 
         disableZoom(view)
         disableTextSelection(view)
@@ -21,6 +29,8 @@ internal open class CustomWebViewClient(private val activity: MainActivity) : We
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+        lastUrl = url!! // remember last url in case of an error
+
         // Send email not supported
         if (url!!.startsWith("mailto:")) {
             activity.showToastMessage(activity.getString(R.string.email_not_supported))
@@ -47,6 +57,7 @@ internal open class CustomWebViewClient(private val activity: MainActivity) : We
         activity.hideProgressBar()
     }
 
+
     override fun onReceivedError(
         view: WebView?,
         request: WebResourceRequest?,
@@ -54,6 +65,7 @@ internal open class CustomWebViewClient(private val activity: MainActivity) : We
     ) {
         super.onReceivedError(view, request, error)
         activity.hideProgressBar()
+        activity.showSnackbarNoInternet(lastUrl)
     }
 
     private fun disableTextSelection(view: WebView?) {
@@ -70,6 +82,9 @@ internal open class CustomWebViewClient(private val activity: MainActivity) : We
         view.getSettings().setDisplayZoomControls(false);
     }
 
+    /**
+     * Dont allow File download, except it is .PDF
+     */
     private fun disallowFileDownload(view: WebView?) {
         view!!.setDownloadListener { url,
                                      userAgent,
