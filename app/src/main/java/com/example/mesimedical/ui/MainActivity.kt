@@ -1,8 +1,7 @@
 package com.example.mesimedical.ui
 
-import android.content.Intent
+
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.webkit.WebView
 import android.widget.ProgressBar
@@ -10,8 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.album.common.Constants.Companion.BASE_URL
 import com.example.mesimedical.R
-import java.io.UnsupportedEncodingException
-import java.net.URLDecoder
+import com.example.mesimedical.utils.Utility
+import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,9 +24,13 @@ class MainActivity : AppCompatActivity() {
         webView = findViewById(R.id.webview)
         progressBar = findViewById(R.id.progress_circle);
 
-        initWebView()
-
+        if (!Utility.isNetworkAvailable(this)) {
+            showSnackbarNoInternet()
+        } else {
+            initWebView()
+        }
     }
+
 
     private fun initWebView() {
         webView.webViewClient = CustomWebViewClient(this)
@@ -43,12 +46,24 @@ class MainActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
     }
 
-    fun showToast(message: String) {
+    fun showToastMessage(message: String) {
         Toast.makeText(
             applicationContext,
             message,
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    private fun showSnackbarNoInternet() {
+        val snack = Snackbar.make(
+            webView, getString(R.string.error_no_internet_connection),
+            Snackbar.LENGTH_INDEFINITE
+        )
+        snack.setAction(getString(R.string.try_again), View.OnClickListener {
+            // executed when TRY AGAIN is clicked
+            initWebView()
+        })
+        snack.show()
     }
 
 }

@@ -1,14 +1,11 @@
 package com.example.mesimedical.ui
 
-import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.core.content.ContextCompat.startActivity
 import com.example.mesimedical.R
 
 
@@ -26,7 +23,7 @@ internal open class CustomWebViewClient(private val activity: MainActivity) : We
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         // Send email not supported
         if (url!!.startsWith("mailto:")) {
-            activity.showToast(activity.getString(R.string.email_not_supported))
+            activity.showToastMessage(activity.getString(R.string.email_not_supported))
             return true
             // Opening external pages is not allowed
         } else if (url.contains("facebook")) {
@@ -84,17 +81,17 @@ internal open class CustomWebViewClient(private val activity: MainActivity) : We
                 // https://www.mesimedical.com/app/uploads/2019/11/ABPIMD_IFU_ENG_v7-2_2019-07-05_web.pdf
                 val pdf = url
                 //view.loadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=$pdf")
-                activity.showToast(activity.getString(R.string.pdf_viewer))
+                activity.showToastMessage(activity.getString(R.string.pdf_viewer))
                 view.loadUrl("https://docs.google.com/gview?embedded=true&url=$pdf") // open in google docs
             } else {
-                activity.showToast(activity.getString(R.string.action_not_supported))
+                activity.showToastMessage(activity.getString(R.string.action_not_supported))
             }
 
         }
     }
 
     private fun showExternalLinksNotAllowedToast() {
-        activity.showToast(activity.getString(R.string.external_links_not_allowed))
+        activity.showToastMessage(activity.getString(R.string.external_links_not_allowed))
     }
 
 }
