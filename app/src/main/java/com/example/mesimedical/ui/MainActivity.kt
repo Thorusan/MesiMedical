@@ -1,7 +1,9 @@
 package com.example.mesimedical.ui
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.widget.ProgressBar
@@ -31,6 +33,23 @@ class MainActivity : AppCompatActivity(), WebListener {
         }
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (event.action == KeyEvent.ACTION_DOWN) {
+            when (keyCode) {
+                KeyEvent.KEYCODE_BACK -> {
+                    if (webView.canGoBack()) {
+                        webView.goBack()
+                    } else {
+                        finish()
+                    }
+                    return true
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView(url: String) {
         webView.webViewClient = CustomWebViewClient(this)
         webView.settings.javaScriptEnabled = true

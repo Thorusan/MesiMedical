@@ -1,11 +1,14 @@
 package com.example.mesimedical.ui
 
 import android.graphics.Bitmap
+import android.os.Build
+import android.util.Log
 import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.RequiresApi
 
 
 internal open class CustomWebViewClient(private val webListener: WebListener) : WebViewClient() {
@@ -53,29 +56,53 @@ internal open class CustomWebViewClient(private val webListener: WebListener) : 
         webListener.hideProgressBar()
     }
 
-
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceivedError(
         view: WebView?,
         request: WebResourceRequest?,
         error: WebResourceError?
     ) {
         super.onReceivedError(view, request, error)
+
         webListener.hideProgressBar()
-        webListener.showSnackbarNoInternet(lastUrl)
+
+        Log.d("ON_RECEIVED_ERROR", "Error has occured on loading page:" + error!!.description)
+        if (error!!.errorCode == ERROR_HOST_LOOKUP) {
+            webListener.showSnackbarNoInternet(lastUrl)
+        }
     }
 
+    override fun onReceivedError(
+        view: WebView?,
+        errorCode: Int,
+        description: String?,
+        failingUrl: String?
+    ) {
+        super.onReceivedError(view, errorCode, description, failingUrl)
+
+        webListener.hideProgressBar()
+
+        if (errorCode == ERROR_HOST_LOOKUP) {
+            webListener.showSnackbarNoInternet(lastUrl)
+        }
+    }
+
+    /**
+     * Disable text selection on long click
+     */
     private fun disableTextSelection(view: WebView?) {
-        // disable text selection on long click
         view!!.setOnLongClickListener(View.OnLongClickListener { true })
-        view.setLongClickable(false);
-        view.setHapticFeedbackEnabled(false);
+        view.isLongClickable = false;
+        view.isHapticFeedbackEnabled = false;
     }
 
+    /**
+     * Disable zoom-in controls (pinch to zoom)
+     */
     private fun disableZoom(view: WebView?) {
-        // Disable zoom-in controls (pinch to zoom)
-        view!!.getSettings().setSupportZoom(false);
-        view.getSettings().setBuiltInZoomControls(false);
-        view.getSettings().setDisplayZoomControls(false);
+        view!!.settings.setSupportZoom(false);
+        view.settings.builtInZoomControls = false;
+        view.settings.displayZoomControls = false;
     }
 
     /**
