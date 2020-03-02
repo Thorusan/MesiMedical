@@ -1,24 +1,20 @@
 package com.example.mesimedical.ui
 
-import android.app.ProgressDialog
 import android.graphics.Bitmap
 import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.example.mesimedical.R
 
 
-internal open class CustomWebViewClient(
-    private val activity: MainActivity
-) : WebViewClient() {
+internal open class CustomWebViewClient(private val webListener: WebListener) : WebViewClient() {
 
     private lateinit var lastUrl: String
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
-        activity.showProgressBar()
+        webListener.showProgressBar()
 
         lastUrl = url!!
 
@@ -33,7 +29,7 @@ internal open class CustomWebViewClient(
 
         // Send email not supported
         if (url!!.startsWith("mailto:")) {
-            activity.showToastMessage(activity.getString(R.string.email_not_supported))
+            webListener.showToastMessage(Message.EMAIL)
             return true
             // Opening external pages is not allowed
         } else if (url.contains("facebook")) {
@@ -54,7 +50,7 @@ internal open class CustomWebViewClient(
 
     override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)
-        activity.hideProgressBar()
+        webListener.hideProgressBar()
     }
 
 
@@ -64,8 +60,8 @@ internal open class CustomWebViewClient(
         error: WebResourceError?
     ) {
         super.onReceivedError(view, request, error)
-        activity.hideProgressBar()
-        activity.showSnackbarNoInternet(lastUrl)
+        webListener.hideProgressBar()
+        webListener.showSnackbarNoInternet(lastUrl)
     }
 
     private fun disableTextSelection(view: WebView?) {
@@ -96,17 +92,17 @@ internal open class CustomWebViewClient(
                 // https://www.mesimedical.com/app/uploads/2019/11/ABPIMD_IFU_ENG_v7-2_2019-07-05_web.pdf
                 val pdf = url
                 //view.loadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=$pdf")
-                activity.showToastMessage(activity.getString(R.string.pdf_viewer))
+                webListener.showToastMessage(Message.PDF)
                 view.loadUrl("https://docs.google.com/gview?embedded=true&url=$pdf") // open in google docs
             } else {
-                activity.showToastMessage(activity.getString(R.string.action_not_supported))
+                webListener.showToastMessage(Message.ACTION)
             }
 
         }
     }
 
     private fun showExternalLinksNotAllowedToast() {
-        activity.showToastMessage(activity.getString(R.string.external_links_not_allowed))
+        webListener.showToastMessage(Message.EXTERNAL_LINKS)
     }
 
 }

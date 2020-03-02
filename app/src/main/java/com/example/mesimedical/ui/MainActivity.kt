@@ -13,7 +13,7 @@ import com.example.mesimedical.utils.Utility
 import com.google.android.material.snackbar.Snackbar
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), WebListener {
 
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
@@ -25,12 +25,11 @@ class MainActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progress_circle);
 
         if (!Utility.isNetworkAvailable(this)) {
-            showSnackbarNoInternet()
+            showSnackbarNoInternet(BASE_URL)
         } else {
             initWebView(BASE_URL)
         }
     }
-
 
     private fun initWebView(url: String) {
         webView.webViewClient = CustomWebViewClient(this)
@@ -38,23 +37,31 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl(BASE_URL)
     }
 
-    fun showProgressBar() {
+    override fun showProgressBar() {
         progressBar.visibility = View.VISIBLE
     }
 
-    fun hideProgressBar() {
+    override fun hideProgressBar() {
         progressBar.visibility = View.GONE
     }
 
-    fun showToastMessage(message: String) {
+    override fun showToastMessage(message: Message) {
+        var textId: Int
+        when (message) {
+            Message.EXTERNAL_LINKS -> textId = R.string.external_links_not_allowed
+            Message.EMAIL -> textId = R.string.email_not_supported
+            Message.ACTION -> textId = R.string.action_not_supported
+            Message.PDF -> textId = R.string.pdf_viewer
+        }
+
         Toast.makeText(
             applicationContext,
-            message,
+            textId,
             Toast.LENGTH_LONG
         ).show()
     }
 
-    fun showSnackbarNoInternet(lastUrl: String = BASE_URL) {
+    override fun showSnackbarNoInternet(lastUrl: String) {
         val snack = Snackbar.make(
             webView, getString(R.string.error_no_internet_connection),
             Snackbar.LENGTH_INDEFINITE
