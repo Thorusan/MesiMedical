@@ -9,7 +9,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
-import com.example.album.common.Constants.Companion.HOST_URL
+import com.example.album.common.Constants.Companion.URL_FILTER
 
 
 internal open class CustomWebViewClient(private val webListener: WebListener) : WebViewClient() {
@@ -36,7 +36,7 @@ internal open class CustomWebViewClient(private val webListener: WebListener) : 
             webListener.showToastMessage(Message.EMAIL)
             return true
             // Opening external pages is not allowed
-        } else if (!url.contains(HOST_URL)) {
+        } else if (!url.contains(URL_FILTER)) {
             showExternalLinksNotAllowedToast()
             return true;
         } else {
