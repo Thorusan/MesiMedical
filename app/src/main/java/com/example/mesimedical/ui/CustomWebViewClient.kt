@@ -35,6 +35,7 @@ internal open class CustomWebViewClient(private val webListener: WebListener) : 
         lastUrl = url!! // remember last url in case of an error
 
         val hostUrl: Uri
+        // check for short links like: shorturl.at/dxDP8
         try {
             hostUrl = Uri.parse(url)
         } catch (ex: Exception) {
