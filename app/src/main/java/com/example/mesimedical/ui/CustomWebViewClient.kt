@@ -1,6 +1,7 @@
 package com.example.mesimedical.ui
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.view.View
@@ -9,12 +10,13 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
-import com.example.album.common.Constants.Companion.URL_FILTER
-
+import com.example.album.common.Constants.Companion.BASE_URL
+import com.example.mesimedical.utils.Utility.parseHostUrl
 
 internal open class CustomWebViewClient(private val webListener: WebListener) : WebViewClient() {
 
     private lateinit var lastUrl: String
+    private var baseUrlHost: String = parseHostUrl(Uri.parse(BASE_URL).host!!)
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
@@ -28,15 +30,18 @@ internal open class CustomWebViewClient(private val webListener: WebListener) : 
         disallowFileDownload(view)
     }
 
+
+
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         lastUrl = url!! // remember last url in case of an error
+
 
         // Send email not supported
         if (url!!.startsWith("mailto:")) {
             webListener.showToastMessage(Message.EMAIL)
             return true
             // Opening external pages is not allowed
-        } else if (!url.contains(URL_FILTER)) {
+        } else if (!Uri.parse(url).host!!.contains(baseUrlHost)) {
             showExternalLinksNotAllowedToast()
             return true;
         } else {

@@ -6,6 +6,5 @@ class Constants {
         //const val BASE_URL ="https://www.mesimedical.com/peripheral-arterial-disease-and-diabetes/"
         //const val BASE_URL ="https://www.mesimedical.com/support/mesi-mtablet/"
         //const val BASE_URL = "https://www.eboshealthcare.com.au/products/"
-        const val URL_FILTER = "mesimedical.com"
     }
 }

@@ -23,4 +23,13 @@ object Utility {
             return nwInfo.isConnected
         }
     }
+
+    fun parseHostUrl(baseUrlHost: String): String {
+        var parsedUrl: String =  baseUrlHost
+
+        if (parsedUrl.startsWith("www")) {
+            parsedUrl = baseUrlHost.substring("www".length + 1);
+        }
+        return parsedUrl
+    }
 }
