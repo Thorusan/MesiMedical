@@ -31,17 +31,27 @@ internal open class CustomWebViewClient(private val webListener: WebListener) : 
     }
 
 
-
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         lastUrl = url!! // remember last url in case of an error
 
+        val hostUrl: Uri
+        try {
+            hostUrl = Uri.parse(url)
+        } catch (ex: Exception) {
+            Log.d("LINK", "External link: ", ex)
+            showExternalLinksNotAllowedToast()
+            return true;
+        }
 
         // Send email not supported
-        if (url!!.startsWith("mailto:")) {
+        if (url.startsWith("mailto:")) {
             webListener.showToastMessage(Message.EMAIL)
             return true
             // Opening external pages is not allowed
-        } else if (Uri.parse(url).host == null || !Uri.parse(url).host!!.contains(baseUrlHost)) {
+        } else if (hostUrl.host == null) {
+            showExternalLinksNotAllowedToast()
+            return true;
+        } else if (!hostUrl.host!!.contains(baseUrlHost)) {
             showExternalLinksNotAllowedToast()
             return true;
         } else {
