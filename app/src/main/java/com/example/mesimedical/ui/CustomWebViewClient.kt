@@ -41,7 +41,7 @@ internal open class CustomWebViewClient(private val webListener: WebListener) : 
             webListener.showToastMessage(Message.EMAIL)
             return true
             // Opening external pages is not allowed
-        } else if (!Uri.parse(url).host!!.contains(baseUrlHost)) {
+        } else if (Uri.parse(url).host == null || !Uri.parse(url).host!!.contains(baseUrlHost)) {
             showExternalLinksNotAllowedToast()
             return true;
         } else {
