@@ -49,10 +49,11 @@ class MainActivity : AppCompatActivity(), WebListener {
         return super.onKeyDown(keyCode, event)
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     private fun initWebView(url: String) {
         webView.webViewClient = CustomWebViewClient(this)
         webView.settings.javaScriptEnabled = true
+        webView.addJavascriptInterface(JavascriptInterface(this), "myjsi")
         webView.loadUrl(BASE_URL)
     }
 
