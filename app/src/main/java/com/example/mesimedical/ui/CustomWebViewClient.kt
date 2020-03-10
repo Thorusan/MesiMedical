@@ -63,9 +63,14 @@ internal open class CustomWebViewClient(private val webListener: WebListener) : 
     }
 
     override fun onPageFinished(view: WebView?, url: String?) {
-        super.onPageFinished(view, url)
+        //super.onPageFinished(view, url)
 
-        view!!.loadUrl("javascript:window.onhashchange = function() { myjsi.doStuff(); };");
+       /* view!!.loadUrl("javascript:window.onhashchange = function() { alert('test'); };");
+
+        view.loadUrl(
+            "javascript:(function() {  alert('test'); })()");*/
+        //view!!.loadUrl("javascript:window.addEventListener('hashchange', myjsi.doStuff(), false");
+        view!!.loadUrl("javascript: function() { myjsi.doStuff(); };");
         webListener.hideProgressBar()
     }
 
