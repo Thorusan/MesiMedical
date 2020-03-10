@@ -69,9 +69,22 @@ internal open class CustomWebViewClient(private val webListener: WebListener) : 
 
         view.loadUrl(
             "javascript:(function() {  alert('test'); })()");*/
-        //view!!.loadUrl("javascript:window.addEventListener('hashchange', myjsi.doStuff(), false");
-        view!!.loadUrl("javascript:alert('test test test')");
+        //view!!.loadUrl("javascript:window.onhashchange = function() { window.injectedObject.onUrlChange(window.location.href); };");
+        view!!.loadUrl("javascript:window.onhashchange = alert('test test test');");
+        //view!!.loadUrl("javascript:alert('test test test')");
+        //view!!.loadUrl("javascript:window.injectedObject.onUrlChange(window.location.href);"); // working example
+
+        //val loadedUrl: String = "javascript:window.onhashchange = window.injectedObject.onUrlChange(window.location.href)  }"
+
+        //view!!.loadUrl(loadedUrl); // working example
         webListener.hideProgressBar()
+    }
+
+    override fun doUpdateVisitedHistory(view: WebView?,  url: String?,  isReload: Boolean
+    ) {
+        super.doUpdateVisitedHistory(view, url, isReload)
+        //webListener.showToastMessage(Message.ACTION)
+        // somecode to run on hash change.
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

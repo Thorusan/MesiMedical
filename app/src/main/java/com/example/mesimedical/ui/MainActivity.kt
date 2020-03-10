@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity(), WebListener {
         webView.settings.javaScriptEnabled = true
         webView.addJavascriptInterface(JsObject(this), "injectedObject")
         webView.webViewClient = CustomWebViewClient(this)
+        webView.webChromeClient = WebChromeClient()
 
         webView.loadUrl(BASE_URL)
 
