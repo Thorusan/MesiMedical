@@ -54,7 +54,9 @@ class MainActivity : AppCompatActivity(), WebListener {
         webView.webViewClient = CustomWebViewClient(this)
         webView.settings.javaScriptEnabled = true
         webView.addJavascriptInterface(JsObject(this), "injectedObject")
-        webView.loadUrl(BASE_URL)
+        //webView.loadUrl(BASE_URL)
+
+        webView!!.loadUrl("javascript:alert('test test test')");
     }
 
     override fun showProgressBar() {
