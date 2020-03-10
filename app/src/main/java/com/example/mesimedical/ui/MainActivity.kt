@@ -51,12 +51,13 @@ class MainActivity : AppCompatActivity(), WebListener {
 
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     private fun initWebView(url: String) {
-        webView.webViewClient = CustomWebViewClient(this)
         webView.settings.javaScriptEnabled = true
         webView.addJavascriptInterface(JsObject(this), "injectedObject")
-        //webView.loadUrl(BASE_URL)
+        webView.webViewClient = CustomWebViewClient(this)
 
-        webView!!.loadUrl("javascript:alert('test test test')");
+        webView.loadUrl(BASE_URL)
+
+        //webView!!.loadUrl("javascript:alert('test test test')");
     }
 
     override fun showProgressBar() {
