@@ -70,7 +70,7 @@ internal open class CustomWebViewClient(private val webListener: WebListener) : 
         view.loadUrl(
             "javascript:(function() {  alert('test'); })()");*/
         //view!!.loadUrl("javascript:window.addEventListener('hashchange', myjsi.doStuff(), false");
-        view!!.loadUrl("javascript: function() { myjsi.doStuff(); };");
+        view!!.loadUrl("javascript:alert('test test test')");
         webListener.hideProgressBar()
     }
 

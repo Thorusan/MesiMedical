@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), WebListener {
     private fun initWebView(url: String) {
         webView.webViewClient = CustomWebViewClient(this)
         webView.settings.javaScriptEnabled = true
-        webView.addJavascriptInterface(JavascriptInterface(this), "myjsi")
+        webView.addJavascriptInterface(JsObject(this), "injectedObject")
         webView.loadUrl(BASE_URL)
     }
 

@@ -1,10 +1,19 @@
 package com.example.mesimedical.ui
 
 import android.util.Log
+import android.webkit.JavascriptInterface
 
-open class JavascriptInterface(private val webListener: WebListener) {
-    fun doStuff() {
+class JsObject(private val webListener: WebListener) {
+    /*fun doStuff() {
         webListener.showToastMessage(Message.EXTERNAL_LINKS)
         Log.e("TAG","Test link")
+    }*/
+
+
+    @JavascriptInterface
+    fun doStuff() {
+        webListener.showToastMessage(Message.EXTERNAL_LINKS)
+        Log.e("TAG", "Test link")
     }
+
 }
